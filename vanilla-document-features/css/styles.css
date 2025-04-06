@@ -1,0 +1,325 @@
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #718096;
+    --blue-color: #3182CE;
+    --green-color: #38A169;
+    --red-color: #E53E3E;
+    --yellow-color: #D69E2E;
+    --purple-color: #805AD5;
+    --indigo-color: #5A67D8;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --text-color: #2d3748;
+    --border-color: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar {
+    background-color: var(--card-background);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-menu li {
+    margin-left: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: var(--primary-color);
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3651d4;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.btn-red {
+    background-color: var(--red-color);
+    color: white;
+}
+
+.btn-red:hover {
+    background-color: #c53030;
+    transform: translateY(-2px);
+}
+
+.btn-green {
+    background-color: var(--green-color);
+    color: white;
+}
+
+.btn-green:hover {
+    background-color: #2f855a;
+    transform: translateY(-2px);
+}
+
+.btn-indigo {
+    background-color: var(--indigo-color);
+    color: white;
+}
+
+.btn-indigo:hover {
+    background-color: #4c51bf;
+    transform: translateY(-2px);
+}
+
+.btn-yellow {
+    background-color: var(--yellow-color);
+    color: white;
+}
+
+.btn-yellow:hover {
+    background-color: #b7791f;
+    transform: translateY(-2px);
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.page-header {
+    margin: 40px 0 30px;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.page-header p {
+    color: var(--secondary-color);
+    font-size: 1.125rem;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.file-upload {
+    display: block;
+    border: 2px dashed var(--border-color);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.file-upload:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.file-upload.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.file-upload-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.file-upload-text {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.file-upload-hint {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+}
+
+.file-input {
+    display: none;
+}
+
+.error-message {
+    background-color: #fff5f5;
+    color: #c53030;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.error-message i {
+    margin-right: 10px;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+footer {
+    background-color: var(--card-background);
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+footer p {
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        flex-direction: column;
+        background-color: var(--card-background);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px 0;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-menu li {
+        margin: 10px 0;
+    }
+    
+    .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+} 

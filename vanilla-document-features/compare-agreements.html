@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Agreements - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .differences-container {
+            margin-top: 1.5rem;
+        }
+        
+        .difference {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+        
+        .difference.addition {
+            background-color: #ecfdf5;
+            border-left: 4px solid var(--green-color);
+        }
+        
+        .difference.deletion {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--red-color);
+        }
+        
+        .difference.modification {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--yellow-color);
+        }
+        
+        .difference-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .difference-header i {
+            margin-right: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .difference-header .section {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .difference-content {
+            padding-left: 1.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .addition-text {
+            color: #065f46;
+            font-weight: 500;
+        }
+        
+        .deletion-text {
+            color: #991b1b;
+            font-weight: 500;
+            text-decoration: line-through;
+        }
+        
+        .file-upload-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .file-upload-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .summary-box {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .summary-box h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.125rem;
+            color: #000;
+            font-weight: 600;
+        }
+        
+        .summary-box ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            color: #000;
+        }
+        
+        .summary-box li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-box .highlight {
+            font-weight: 600;
+        }
+        
+        .summary-box .green {
+            color: var(--green-color);
+        }
+        
+        .summary-box .red {
+            color: var(--red-color);
+        }
+        
+        .summary-box .yellow {
+            color: var(--yellow-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Compare Agreements</h1>
+            <p>Upload original and revised agreements to see the differences</p>
+        </div>
+
+        <div class="card">
+            <form id="compare-agreements-form">
+                <div class="file-upload-container">
+                    <div>
+                        <h3>Original Document</h3>
+                        <label for="original-file" class="file-upload">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-upload" style="color: var(--green-color);"></i>
+                            </div>
+                            <p class="file-upload-text">Upload original version</p>
+                            <p class="file-upload-hint">PDF or DOCX</p>
+                            <input type="file" id="original-file" class="file-input" accept=".pdf,.docx">
+                        </label>
+                    </div>
+                    
+                    <div>
+                        <h3>Revised Document</h3>
+                        <label for="revised-file" class="file-upload">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-upload" style="color: var(--green-color);"></i>
+                            </div>
+                            <p class="file-upload-text">Upload revised version</p>
+                            <p class="file-upload-hint">PDF or DOCX</p>
+                            <input type="file" id="revised-file" class="file-input" accept=".pdf,.docx">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none; margin-top: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <button type="submit" class="btn btn-green" style="width: 100%; margin-top: 1.5rem;">
+                    <i class="fas fa-file-alt"></i> Compare Documents
+                </button>
+            </form>
+        </div>
+
+        <div id="comparison-result" class="card" style="display: none;">
+            <h2>Document Differences</h2>
+            
+            <div id="differences-container" class="differences-container">
+                <!-- Differences will be dynamically added here -->
+            </div>
+            
+            <div class="summary-box">
+                <h3>Summary of Changes:</h3>
+                <ul>
+                    <li>
+                        <span class="highlight green">2 additions</span> - New clauses added to the agreement
+                    </li>
+                    <li>
+                        <span class="highlight red">1 deletion</span> - Clauses removed from the original agreement
+                    </li>
+                    <li>
+                        <span class="highlight yellow">2 modifications</span> - Clauses that were changed between versions
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

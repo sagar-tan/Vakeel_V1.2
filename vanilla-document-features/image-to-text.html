@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Text - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .image-preview-container {
+            margin-top: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .image-preview {
+            max-height: 250px;
+            max-width: 100%;
+            display: none;
+            margin: 0 auto;
+        }
+        
+        .extracted-text-container {
+            margin-top: 1rem;
+        }
+        
+        .extracted-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+            color: #000;
+            font-weight: 500;
+        }
+        
+        .confidence-score {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .confidence-score-label {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .confidence-score-value {
+            font-weight: 600;
+        }
+        
+        .confidence-score-value.high {
+            color: var(--green-color);
+        }
+        
+        .confidence-score-value.medium {
+            color: var(--yellow-color);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Image to Text</h1>
+            <p>Extract text from images and scanned documents</p>
+        </div>
+
+        <div class="card">
+            <form id="image-to-text-form">
+                <label for="image-file" class="file-upload">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-image" style="color: var(--indigo-color);"></i>
+                    </div>
+                    <p class="file-upload-text">Drag & drop your image or click to browse</p>
+                    <p class="file-upload-hint">Supports JPG, PNG, GIF, BMP, and TIFF</p>
+                    <input type="file" id="image-file" class="file-input" accept="image/*">
+                </label>
+
+                <div class="image-preview-container">
+                    <h3>Image Preview</h3>
+                    <img id="image-file-preview" class="image-preview" alt="Image Preview">
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none; margin-top: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <button type="button" id="extract-text-btn" class="btn btn-indigo" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-file-alt"></i> Extract Text
+                </button>
+            </form>
+        </div>
+
+        <div id="extracted-result" class="card" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>Extracted Text</h2>
+                <div class="confidence-score">
+                    <span class="confidence-score-label">Confidence Score:</span>
+                    <span id="confidence-score" class="confidence-score-value high">95%</span>
+                </div>
+            </div>
+            
+            <textarea id="extracted-text" class="extracted-textarea" placeholder="Extracted text will appear here..."></textarea>
+            
+            <div class="action-buttons">
+                <button id="copy-text-btn" class="btn btn-secondary copy-btn" data-target="extracted-text">
+                    <i class="fas fa-copy"></i> Copy to Clipboard
+                </button>
+                
+                <button id="download-text-btn" class="btn btn-indigo">
+                    <i class="fas fa-download"></i> Download as Text File
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Handle image preview
+        const imageInput = document.getElementById('image-file');
+        const imagePreview = document.getElementById('image-file-preview');
+        
+        if (imageInput && imagePreview) {
+            imageInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+        
+        // Handle download text file
+        const downloadBtn = document.getElementById('download-text-btn');
+        const extractedText = document.getElementById('extracted-text');
+        
+        if (downloadBtn && extractedText) {
+            downloadBtn.addEventListener('click', function() {
+                const text = extractedText.value;
+                if (!text) return;
+                
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'extracted-text.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html> 

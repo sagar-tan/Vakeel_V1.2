@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agreement Summary - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .summary-text {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            color: #000;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Agreement Summary</h1>
+            <p>Upload your agreement document to generate a concise summary</p>
+        </div>
+
+        <div class="card">
+            <form id="agreement-summary-form">
+                <label for="agreement-file" class="file-upload">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-upload" style="color: var(--primary-color);"></i>
+                    </div>
+                    <p class="file-upload-text">Drag & drop your file or click to browse</p>
+                    <p class="file-upload-hint">Supports PDF and DOCX files</p>
+                    <input type="file" id="agreement-file" class="file-input" accept=".pdf,.docx">
+                </label>
+
+                <div id="error-message" class="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-file-alt"></i> Generate Summary
+                </button>
+            </form>
+        </div>
+
+        <div id="summary-result" class="card" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>Summary Results</h2>
+                <button class="btn btn-secondary copy-btn" data-target="summary-text">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            <div class="summary-text" id="summary-text"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

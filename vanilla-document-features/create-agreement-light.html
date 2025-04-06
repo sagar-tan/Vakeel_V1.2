@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Agreement Light - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .template-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .template-option {
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .template-option:hover {
+            border-color: var(--yellow-color);
+        }
+        
+        .template-option.selected {
+            border-color: var(--yellow-color);
+            background-color: #fffbeb;
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        
+        .template-radio {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .template-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .template-check {
+            color: var(--yellow-color);
+            display: none;
+        }
+        
+        .template-option.selected .template-check {
+            display: inline-block;
+        }
+        
+        .template-description {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .form-group-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .success-banner {
+            background-color: #ecfdf5;
+            border: 1px solid var(--green-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .success-banner-text h3 {
+            color: #065f46;
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .success-banner-text p {
+            color: #065f46;
+            font-size: 0.875rem;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Create Agreement Light</h1>
+            <p>Simple agreement creation with standardized templates</p>
+        </div>
+
+        <div class="card">
+            <form id="create-agreement-light-form">
+                <div class="form-section">
+                    <h3>Select Template</h3>
+                    <div class="template-selector">
+                        <label class="template-option">
+                            <input type="radio" name="template" value="nda" class="template-radio" checked>
+                            <div class="template-header">
+                                <span class="template-title">Non-Disclosure Agreement</span>
+                                <i class="fas fa-check-circle template-check"></i>
+                            </div>
+                            <p class="template-description">
+                                Protect confidential information shared between parties
+                            </p>
+                        </label>
+                        
+                        <label class="template-option">
+                            <input type="radio" name="template" value="service" class="template-radio">
+                            <div class="template-header">
+                                <span class="template-title">Service Agreement</span>
+                                <i class="fas fa-check-circle template-check"></i>
+                            </div>
+                            <p class="template-description">
+                                Define terms for services provided between parties
+                            </p>
+                        </label>
+                        
+                        <label class="template-option">
+                            <input type="radio" name="template" value="employment" class="template-radio">
+                            <div class="template-header">
+                                <span class="template-title">Employment Contract</span>
+                                <i class="fas fa-check-circle template-check"></i>
+                            </div>
+                            <p class="template-description">
+                                Establish employment terms between employer and employee
+                            </p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Party 1 Information</h3>
+                    <div class="form-group-grid">
+                        <div class="form-group">
+                            <label for="party1-name">Name (Individual or Company)</label>
+                            <input type="text" id="party1-name" name="party1-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="party1-address">Address</label>
+                            <input type="text" id="party1-address" name="party1-address" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Party 2 Information</h3>
+                    <div class="form-group-grid">
+                        <div class="form-group">
+                            <label for="party2-name">Name (Individual or Company)</label>
+                            <input type="text" id="party2-name" name="party2-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="party2-address">Address</label>
+                            <input type="text" id="party2-address" name="party2-address" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Agreement Details</h3>
+                    <div class="form-group-grid">
+                        <div class="form-group">
+                            <label for="effective-date">Effective Date</label>
+                            <input type="date" id="effective-date" name="effective-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duration (months)</label>
+                            <select id="duration" name="duration">
+                                <option value="3">3 months</option>
+                                <option value="6">6 months</option>
+                                <option value="12" selected>12 months</option>
+                                <option value="24">24 months</option>
+                                <option value="36">36 months</option>
+                                <option value="0">Indefinite</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additional-terms">Additional Terms (Optional)</label>
+                        <textarea id="additional-terms" name="additional-terms" rows="4" placeholder="Enter any additional terms you'd like to include in the agreement..."></textarea>
+                    </div>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <div class="form-group" style="text-align: right;">
+                    <button type="submit" class="btn btn-yellow">
+                        Generate Agreement
+                    </button>
+                </div>
+                
+                <div id="agreement-generated" class="success-banner" style="display: none;">
+                    <div class="success-banner-text">
+                        <h3>Agreement Generated!</h3>
+                        <p>Your <span id="template-name">Agreement</span> is ready for download.</p>
+                    </div>
+                    <button type="button" class="btn btn-green">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Handle template selection
+        const templateOptions = document.querySelectorAll('.template-option');
+        templateOptions.forEach(option => {
+            const radio = option.querySelector('input[type="radio"]');
+            
+            // Set initial selected state
+            if (radio.checked) {
+                option.classList.add('selected');
+            }
+            
+            // Handle click events
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                templateOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option and check radio
+                option.classList.add('selected');
+                radio.checked = true;
+            });
+        });
+    </script>
+</body>
+</html> 

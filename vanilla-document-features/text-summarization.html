@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .summary-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .control-group {
+            flex: 1;
+        }
+        
+        .text-input-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .text-input-container .counter {
+            position: absolute;
+            bottom: 0.625rem;
+            right: 0.625rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .text-input-container .textarea-indicator {
+            position: absolute;
+            right: 0.625rem;
+            top: 0.625rem;
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .textarea-indicator .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+        }
+        
+        .textarea-indicator .dot.active {
+            background-color: var(--green-color);
+        }
+        
+        .summary-container {
+            margin-top: 2rem;
+        }
+        
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-header h2 {
+            margin: 0;
+        }
+        
+        .summary-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .summary-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .summary-actions button {
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            background-color: white;
+            transition: all 0.2s;
+        }
+        
+        .summary-actions button:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .summary-type-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .summary-tab.active {
+            color: var(--red-color);
+            border-bottom: 2px solid var(--red-color);
+        }
+        
+        @media (max-width: 768px) {
+            .summary-controls {
+                flex-direction: column;
+            }
+            
+            .summary-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat-item {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Text Summarization</h1>
+            <p>Generate concise summaries from long documents</p>
+        </div>
+
+        <div class="card">
+            <form id="text-summary-form">
+                <div class="text-input-container">
+                    <label for="original-text">Text to Summarize</label>
+                    <div class="textarea-indicator">
+                        <span class="dot" id="text-complexity-indicator"></span>
+                        <span id="text-complexity-label">Analyzing...</span>
+                    </div>
+                    <textarea id="original-text" rows="10" placeholder="Paste or type your text here (minimum 100 words for best results)"></textarea>
+                    <div class="counter"><span id="word-count">0</span> words</div>
+                </div>
+                
+                <div class="summary-controls">
+                    <div class="control-group">
+                        <label for="summary-length">Summary Length</label>
+                        <select id="summary-length" name="summary-length">
+                            <option value="very-short">Very Short (10%)</option>
+                            <option value="short">Short (20%)</option>
+                            <option value="medium" selected>Medium (30%)</option>
+                            <option value="long">Long (40%)</option>
+                            <option value="very-long">Very Long (50%)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="summary-style">Summary Style</label>
+                        <select id="summary-style" name="summary-style">
+                            <option value="informative" selected>Informative</option>
+                            <option value="descriptive">Descriptive</option>
+                            <option value="evaluative">Evaluative</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="option-checkbox">
+                    <input type="checkbox" id="key-points" name="key-points" checked>
+                    <label for="key-points">Include key points</label>
+                </div>
+                
+                <div class="option-checkbox">
+                    <input type="checkbox" id="highlight-entities" name="highlight-entities">
+                    <label for="highlight-entities">Highlight important entities and terms</label>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none; margin-top: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <button type="submit" id="summarize-btn" class="btn btn-red" style="width: 100%; margin-top: 1.5rem;">
+                    <i class="fas fa-compress-alt"></i> Generate Summary
+                </button>
+            </form>
+        </div>
+
+        <div id="summary-result" class="card summary-container" style="display: none;">
+            <div class="summary-header">
+                <h2>Your Summary</h2>
+                <div class="summary-actions">
+                    <button id="copy-summary" title="Copy to clipboard">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button id="download-summary" title="Download as TXT">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Original</span>
+                    <span class="stat-value" id="original-word-count">0 words</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Summary</span>
+                    <span class="stat-value" id="summary-word-count">0 words</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Reduction</span>
+                    <span class="stat-value" id="reduction-percentage">0%</span>
+                </div>
+            </div>
+            
+            <div class="summary-type-tabs">
+                <div class="summary-tab active" data-tab="summary">Summary</div>
+                <div class="summary-tab" data-tab="key-points">Key Points</div>
+            </div>
+            
+            <div id="summary-text-container">
+                <p id="summary-text">Your summary will appear here after processing.</p>
+            </div>
+            
+            <div id="key-points-container" style="display: none;">
+                <ul id="key-points-list">
+                    <!-- Key points will be populated here -->
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Word counter functionality
+        const originalTextArea = document.getElementById('original-text');
+        const wordCountDisplay = document.getElementById('word-count');
+        const complexityIndicator = document.getElementById('text-complexity-indicator');
+        const complexityLabel = document.getElementById('text-complexity-label');
+        
+        originalTextArea?.addEventListener('input', function() {
+            const text = this.value.trim();
+            const wordCount = text ? text.split(/\s+/).length : 0;
+            
+            if (wordCountDisplay) {
+                wordCountDisplay.textContent = wordCount;
+            }
+            
+            // Update complexity indicator
+            updateComplexityIndicator(text);
+        });
+        
+        function updateComplexityIndicator(text) {
+            if (!text) {
+                if (complexityIndicator) complexityIndicator.className = 'dot';
+                if (complexityLabel) complexityLabel.textContent = 'No text';
+                return;
+            }
+            
+            const wordCount = text.split(/\s+/).length;
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const avgWordsPerSentence = sentences.length > 0 ? wordCount / sentences.length : 0;
+            
+            let complexity = 'Simple';
+            
+            if (avgWordsPerSentence > 25) {
+                complexity = 'Complex';
+            } else if (avgWordsPerSentence > 15) {
+                complexity = 'Moderate';
+            }
+            
+            if (complexityIndicator) {
+                complexityIndicator.className = 'dot active';
+            }
+            
+            if (complexityLabel) {
+                complexityLabel.textContent = complexity;
+            }
+        }
+        
+        // Form submission
+        document.getElementById('text-summary-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const text = originalTextArea?.value.trim();
+            if (!text || text.split(/\s+/).length < 20) {
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.querySelector('span').textContent = 'Please enter at least 20 words for summarization';
+                    errorMessage.style.display = 'flex';
+                }
+                return;
+            }
+            
+            // Hide error if shown
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+            
+            // Generate summary (in a real app, this would call an API)
+            generateSummary(text);
+        });
+        
+        function generateSummary(text) {
+            // Get options
+            const summaryLength = document.getElementById('summary-length')?.value || 'medium';
+            const summaryStyle = document.getElementById('summary-style')?.value || 'informative';
+            const includeKeyPoints = document.getElementById('key-points')?.checked || false;
+            
+            // Calculate desired word count
+            const originalWordCount = text.split(/\s+/).length;
+            let reductionPercentage = 0.3; // Default for medium
+            
+            switch (summaryLength) {
+                case 'very-short': reductionPercentage = 0.1; break;
+                case 'short': reductionPercentage = 0.2; break;
+                case 'long': reductionPercentage = 0.4; break;
+                case 'very-long': reductionPercentage = 0.5; break;
+            }
+            
+            // In a real app, you would send the text to an API for summarization
+            // For demo purposes, let's create a simulated summary
+            const targetWordCount = Math.floor(originalWordCount * reductionPercentage);
+            
+            // Simplified summarization for demo (real implementation would use NLP techniques)
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const selectedSentences = sentences.slice(0, Math.ceil(sentences.length * reductionPercentage));
+            let summary = selectedSentences.join('. ').trim() + '.';
+            
+            // Display summary
+            const summaryResult = document.getElementById('summary-result');
+            if (summaryResult) {
+                summaryResult.style.display = 'block';
+            }
+            
+            const summaryText = document.getElementById('summary-text');
+            if (summaryText) {
+                summaryText.textContent = summary;
+            }
+            
+            // Update stats
+            const summaryWordCount = summary.split(/\s+/).length;
+            
+            document.getElementById('original-word-count')?.textContent = `${originalWordCount} words`;
+            document.getElementById('summary-word-count')?.textContent = `${summaryWordCount} words`;
+            document.getElementById('reduction-percentage')?.textContent = 
+                `${Math.round((1 - (summaryWordCount / originalWordCount)) * 100)}%`;
+                
+            // Generate key points if requested
+            if (includeKeyPoints) {
+                generateKeyPoints(text);
+            }
+        }
+        
+        function generateKeyPoints(text) {
+            // In a real app, you would use NLP to extract key points
+            // For demo, we'll just take some of the first sentences
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const selectedSentences = sentences.filter((_, index) => index % 4 === 0).slice(0, 5);
+            
+            const keyPointsList = document.getElementById('key-points-list');
+            if (keyPointsList) {
+                keyPointsList.innerHTML = '';
+                
+                selectedSentences.forEach(sentence => {
+                    const li = document.createElement('li');
+                    li.textContent = sentence.trim() + '.';
+                    keyPointsList.appendChild(li);
+                });
+            }
+        }
+        
+        // Tab switching functionality
+        document.querySelectorAll('.summary-tab')?.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Update active tab
+                document.querySelectorAll('.summary-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabType = this.getAttribute('data-tab');
+                
+                if (tabType === 'summary') {
+                    document.getElementById('summary-text-container').style.display = 'block';
+                    document.getElementById('key-points-container').style.display = 'none';
+                } else if (tabType === 'key-points') {
+                    document.getElementById('summary-text-container').style.display = 'none';
+                    document.getElementById('key-points-container').style.display = 'block';
+                }
+            });
+        });
+        
+        // Copy and download functionality
+        document.getElementById('copy-summary')?.addEventListener('click', function() {
+            const summaryText = document.getElementById('summary-text')?.textContent;
+            if (summaryText) {
+                navigator.clipboard.writeText(summaryText)
+                    .then(() => {
+                        // Show a brief notification that it was copied (in a real app)
+                        this.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                    });
+            }
+        });
+        
+        document.getElementById('download-summary')?.addEventListener('click', function() {
+            const summaryText = document.getElementById('summary-text')?.textContent;
+            if (summaryText) {
+                const blob = new Blob([summaryText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'summary.txt';
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 0);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Translation - Document Features</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .language-selector-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .language-selector-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option-section {
+            margin-top: 1.5rem;
+        }
+        
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .option-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .option-checkbox input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+        }
+        
+        .progress-container {
+            margin-top: 1rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 0.625rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-inner {
+            height: 100%;
+            background-color: var(--red-color);
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+        
+        .success-message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message i {
+            color: var(--green-color);
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        
+        .success-message-text h3 {
+            color: var(--green-color);
+            margin-bottom: 0.25rem;
+        }
+        
+        .translated-info {
+            margin-bottom: 1.5rem;
+        }
+        
+        .translated-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .language-name {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">DocFeatures</a>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-menu">
+                    <!-- Navigation items removed -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Document Translation</h1>
+            <p>Translate your legal documents while preserving formatting</p>
+        </div>
+
+        <div class="card">
+            <form id="document-translation-form">
+                <label for="document-file" class="file-upload">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-file-alt" style="color: var(--red-color);"></i>
+                    </div>
+                    <p class="file-upload-text">Drag & drop your document or click to browse</p>
+                    <p class="file-upload-hint">Supports PDF, DOCX, and TXT files</p>
+                    <input type="file" id="document-file" class="file-input" accept=".pdf,.docx,.txt">
+                </label>
+                
+                <div class="language-selector-container">
+                    <div>
+                        <label for="source-language">Source Language</label>
+                        <select id="source-language" name="source-language">
+                            <option value="en" selected>English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="zh">Chinese (Simplified)</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ar">Arabic</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="target-language">Target Language</label>
+                        <select id="target-language" name="target-language">
+                            <option value="en">English</option>
+                            <option value="es" selected>Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="zh">Chinese (Simplified)</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ar">Arabic</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="option-section">
+                    <div class="option-title">Translation Options</div>
+                    
+                    <div class="option-checkbox">
+                        <input type="checkbox" id="preserve-formatting" name="preserve-formatting" checked>
+                        <label for="preserve-formatting">Preserve document formatting</label>
+                    </div>
+                    
+                    <div class="option-checkbox">
+                        <input type="checkbox" id="translate-headers" name="translate-headers">
+                        <label for="translate-headers">Translate signature blocks and headers</label>
+                    </div>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none; margin-top: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+
+                <button type="submit" id="translate-btn" class="btn btn-red" style="width: 100%; margin-top: 1.5rem;">
+                    <i class="fas fa-globe"></i> Translate Document
+                </button>
+            </form>
+        </div>
+
+        <div id="translation-progress" class="card" style="display: none;">
+            <h2>Translation in Progress</h2>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>Translating document</span>
+                    <span id="progress-percentage">45%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-bar-inner" class="progress-bar-inner" style="width: 45%;"></div>
+                </div>
+            </div>
+            
+            <p style="font-style: italic; font-size: 0.875rem; margin-top: 0.5rem;">
+                Translation time varies depending on document length and complexity
+            </p>
+        </div>
+
+        <div id="translation-complete" class="card" style="display: none;">
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <div class="success-message-text">
+                    <h3>Translation Complete!</h3>
+                </div>
+            </div>
+            
+            <div class="translated-info">
+                <p>Your document has been translated from <span id="source-language-name" class="language-name">English</span> to <span id="target-language-name" class="language-name">Spanish</span>.</p>
+                <p>The translated document maintains the original formatting and structure.</p>
+            </div>
+            
+            <button type="button" class="btn btn-red" style="width: 100%;">
+                <i class="fas fa-download"></i> Download Translated Document
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Document Features. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Simulate translation progress
+        document.getElementById('document-translation-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('document-file');
+            if (!fileInput?.files.length) {
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.querySelector('span').textContent = 'Please select a file to translate';
+                    errorMessage.style.display = 'flex';
+                }
+                return;
+            }
+            
+            const sourceLanguage = document.getElementById('source-language').value;
+            const targetLanguage = document.getElementById('target-language').value;
+            
+            if (sourceLanguage === targetLanguage) {
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.querySelector('span').textContent = 'Source and target languages cannot be the same';
+                    errorMessage.style.display = 'flex';
+                }
+                return;
+            }
+            
+            // Hide the form
+            this.style.display = 'none';
+            
+            // Show progress
+            const progressSection = document.getElementById('translation-progress');
+            if (progressSection) {
+                progressSection.style.display = 'block';
+            }
+            
+            // Simulate progress updates
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar-inner');
+            const progressText = document.getElementById('progress-percentage');
+            
+            const progressInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 1;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Hide progress
+                    if (progressSection) {
+                        progressSection.style.display = 'none';
+                    }
+                    
+                    // Show complete
+                    const completeSection = document.getElementById('translation-complete');
+                    if (completeSection) {
+                        completeSection.style.display = 'block';
+                    }
+                    
+                    // Update language names
+                    updateLanguageNames(sourceLanguage, targetLanguage);
+                }
+                
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                }
+                
+                if (progressText) {
+                    progressText.textContent = `${progress}%`;
+                }
+            }, 200);
+        });
+        
+        // Update language names
+        function updateLanguageNames(sourceCode, targetCode) {
+            const sourceElement = document.getElementById('source-language-name');
+            const targetElement = document.getElementById('target-language-name');
+            
+            const languages = {
+                'en': 'English',
+                'es': 'Spanish',
+                'fr': 'French',
+                'de': 'German',
+                'it': 'Italian',
+                'pt': 'Portuguese',
+                'ru': 'Russian',
+                'zh': 'Chinese (Simplified)',
+                'ja': 'Japanese',
+                'ar': 'Arabic'
+            };
+            
+            if (sourceElement) {
+                sourceElement.textContent = languages[sourceCode] || 'Source Language';
+            }
+            
+            if (targetElement) {
+                targetElement.textContent = languages[targetCode] || 'Target Language';
+            }
+        }
+    </script>
+</body>
+</html> 
